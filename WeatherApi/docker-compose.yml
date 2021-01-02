@@ -1,0 +1,18 @@
+version: '3'
+services:
+  weatherapi:
+    build: ./
+    ports:
+      - "8080:80"
+      - "8081:443"
+    environment:
+      ASPNETCORE_URLS: "https://+;http://+"
+      ASPNETCORE_HTTPS_PORT: "8081"
+      ASPNETCORE_ENVIRONMENT: "Development"
+      # On MacOS, the next 2 lines are necessary.
+      # .Net Core is not able to find automatically the certificate and password from user secrets
+      ASPNETCORE_Kestrel__Certificates__Default__Path: "/root/.aspnet/https/WeatherApi.pfx" 
+      ASPNETCORE_Kestrel__Certificates__Default__Password: "pa55w0rd!"
+    volumes:
+      - ${HOME}/.microsoft/usersecrets/:/root/.microsoft/usersecrets/
+      - ${HOME}/.aspnet/https/:/root/.aspnet/https/
